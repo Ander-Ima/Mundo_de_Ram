@@ -1,60 +1,39 @@
 #include <bits/stdc++.h>
-using  namespace std;
+using namespace std;
 
 typedef unsigned long long int u64;
 
-u64 base, exponenete, modulo;
-vector<u64> residuos;
+// Problema de exponenciacion modular, resolver a^n (mod m).
+// para resolverlo se usara un "algoritmo/formula" llamado exponenciacion modular rapida
 
-u64 respuesta(){
+u64 resultado(u64 base, u64 exponent, u64 modulo) {
 
-    u64 operacion = base % modulo; 
+    // Anotaciones en la libreta
+    // 1) Escribir el exponente n, en binario, asi cada ves que aparesca el uno se ejecutara la operacion (x(a) mod(m))
+    // 2) Se calcula iterativamente a mod (m), a^2 mod(m), a^4 mod (m).... a^i mod(m)
+    // 3) A su vez se diminuye el exponente, ya que se esta convirtiendo en binario(se divide entre 2, si el resultado es impar significaria que es un 1 en binario, por lo que se realiza lo diche en el 1er paso)
+    // 4) El codigo se repite hasta que se haya convertido en total n al binario(n < 0) 
 
-    residuos.push_back(operacion);
-    u64 normal = residuos[0];
+    u64 result = 1;     // Se declara como 1, ya que ers neutro multiplicativo
+    base %= modulo;
+    while (exponent > 0) {
+        if (exponent % 2 == 1) {  // Se checa si no hay un 1 en binario
+            result = (result * base) % modulo; // Si hay un 1, se toma la posicion i anteriormente iterada y se multiplica por el resultado, ya que x*y*z mod (m) = r*z mod (m)  donde r = x*y mod (m) 
+        }
 
-    operacion = pow(base, 2);
-    operacion =  operacion % modulo;
-
-    u64 contador = 3;
-
-
-    while(operacion != normal){
-
-        residuos.push_back(operacion);
-
-        operacion = pow(base, contador);
-        operacion =  operacion % modulo;
-
-        contador++;
-
+        base = (base * base) % modulo; //Se determina el modulo de la posicion i de iterar.
+        exponent /= 2;
     }
-
-    u64 posicion = exponenete % residuos.size();
-
-    if(posicion == 0){
-
-        return residuos.back();
-
-
-    }
-
-    else{
-
-        return residuos[posicion-1];
-
-    }
-    
+    return result;
 }
 
+int main() {
+    std::ios::sync_with_stdio(false);
 
-int main(){
+    u64 base, exponente, modulo;
+    cin >> base >> exponente >> modulo;
 
-    std:: ios::sync_with_stdio(false);
-
-    cin >> base >> exponenete >> modulo;
-
-    cout << respuesta() << endl;
+    cout << resultado(base, exponente, modulo) << endl;
 
     return 0;
 }
