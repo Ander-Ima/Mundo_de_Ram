@@ -14,7 +14,7 @@ u64 resultado(u64 base, u64 exponent, u64 modulo) {
     // 3) A su vez se diminuye el exponente, ya que se esta convirtiendo en binario(se divide entre 2, si el resultado es impar significaria que es un 1 en binario, por lo que se realiza lo diche en el 1er paso)
     // 4) El codigo se repite hasta que se haya convertido en total n al binario(n < 0) 
 
-    u64 result = 1;     // Se declara como 1, ya que ers neutro multiplicativo
+    u64 result = 1;     // Se declara como 1, ya que es neutro multiplicativo
     base %= modulo;
     while (exponent > 0) {
         if (exponent % 2 == 1) {  // Se checa si no hay un 1 en binario
